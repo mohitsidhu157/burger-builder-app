@@ -20,10 +20,10 @@
     height : 15%;
     position : absolute;
     background-color : white;
-    left : 150%;
-    top : -130%;
+    left : 30%;
+    top : 50%;
     border-radius : 40%;
-    transform : rotate(90deg);
+    transform : rotate(-20deg);
     box-shadow:  inset 1px 3px #c9c9c9;
 }
 .Seeds1:before{
@@ -33,7 +33,7 @@
     position : absolute;
     background-color: white;
     left : 180%;
-    top : -50%;
+    top : 50%;
     border-radius: 40%;
     transform: rotate(60deg);
     box-shadow : inset -1px -3px #c9c9c9;
