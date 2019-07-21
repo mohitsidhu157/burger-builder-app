@@ -17,25 +17,74 @@ class BurgerBuilder extends Component{
             cheese : 0,
             meat : 0
         },
-        totalPrice : 4
+        totalPrice : 4,
+        purchasable : false
     }
+    // updatePurchasableState = () => {
+    //     const current = {...this.state.ingredients};
+    //     const sum  = Object.keys(current)
+    //                 .map(igKey=>{
+    //                     return current[igKey]
+    //                 })
+    //                 .reduce((sum,el)=>{
+    //                     return sum+el;
+    //                 },0);
+    //     console.log(sum);
+    //     this.setState({purchasable : sum>0});
+    // }
     addIngredientHandler= (type) => {
         const current = this.state.ingredients[type];
         const updated = current+1;
         const updatedIngredient = {...this.state.ingredients};
         updatedIngredient[type] = updated;
+        const sum  = Object.keys(updatedIngredient)
+        .map(igKey=>{
+            return updatedIngredient[igKey]
+        })
+        .reduce((sum,el)=>{
+            return sum+el;
+        },0);
+        // console.log(sum);
         const priceToAdd = INGREDIENT_PRICES[type];
         const currentPrice = this.state.totalPrice;
         const updatedPrice = currentPrice + priceToAdd;
-        this.setState({ingredients : updatedIngredient, totalPrice : updatedPrice});
+        this.setState({ingredients : updatedIngredient, totalPrice : updatedPrice,purchasable : sum>0});
+        ;
     }
-
+    removeIngredientHandler = (type) => {
+        const current = this.state.ingredients[type];
+        if(current<=0){return;}
+        const updated = current-1;
+        const updatedIngredient = {...this.state.ingredients};
+        updatedIngredient[type] = updated;
+        const sum  = Object.keys(updatedIngredient)
+        .map(igKey=>{
+            return updatedIngredient[igKey]
+        })
+        .reduce((sum,el)=>{
+            return sum+el;
+        },0);
+        // console.log(sum);
+        const priceToRemove = INGREDIENT_PRICES[type];
+        const currentPrice = this.state.totalPrice;
+        const updatedPrice = currentPrice - priceToRemove;
+        this.setState({ingredients : updatedIngredient, totalPrice : updatedPrice,purchasable : sum>0});
+        // this.updatePurchasableState();
+    }
     render(){
+        const disabledInfo = {...this.state.ingredients};
+        for(let key in disabledInfo){
+            disabledInfo[key] = disabledInfo[key] <= 0;
+        }
         return (
             <Aux>
                 <Burger ingredients={this.state.ingredients}/>
                 <BuildControls
+                    price={this.state.totalPrice}
                     ingredientAdded={this.addIngredientHandler}
+                    ingredientRemoved = {this.removeIngredientHandler}
+                    disabled={disabledInfo}
+                    purchasable = {this.state.purchasable}
                 />
             </Aux>
         );
