@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/Aux/Aux";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import axios from '../../axios-orders';
 const INGREDIENT_PRICES = {
     salad : 0.5,
     cheese : 0.4,
@@ -65,7 +66,22 @@ class BurgerBuilder extends Component{
         this.setState({purchasing : true});
     }
     continueHandler = () => {
-        alert("Continue succesful!");
+        // alert("Continue succesful!");
+        const order = {
+            ingredients : this.state.ingredients,
+            price : this.state.totalPrice,
+            customer : {
+                name : 'Max',
+                address : {
+                    street : "Teststreet 1",
+                    zipCode : '41345',
+                    country : 'germany'
+                },
+                email : "test@test.com"
+            },
+            deliveryMethod : "Fastest"
+        }
+        axios.post('/orders.json',order).then(res=>console.log(res)).catch(err=>console.log(err))
     }
     modalClosed = () =>{
         this.setState({purchasing : false});
